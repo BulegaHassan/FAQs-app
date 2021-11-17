@@ -1,35 +1,24 @@
 "use strict";
-var $ = function(id) { return document.getElementById(id); };
 
 // the event handler for the click event of each h2 element
-var toggle = function() {
-    var h2 = this;                     
-    var div = h2.nextElementSibling;  
+const toggle = evt => {
+    const h2Element = evt.currentTarget;                 // get the clicked h2 element
+    const divElement = h2Element.nextElementSibling;     // get h2's sibling div
 
-    // toggle plus and minus image in h2 elements by adding or removing a class
-    if (h2.hasAttribute("class")) { 
-        h2.removeAttribute("class");	
-    } else { 
-        h2.setAttribute("class", "minus"); 
-    }
+    h2Element.classList.toggle("minus");
+    divElement.classList.toggle("open");
 
-    // toggle div visibility by adding or removing a class
-    if (div.hasAttribute("class")) { 
-        div.removeAttribute("class");
-    } else { 
-        div.setAttribute("class", "open"); 
-    } 
+    evt.preventDefault();   // cancel default action of h2 tag's <a> tag
 };
 
-window.onload = function() {
+document.addEventListener("DOMContentLoaded", () => {
+    // get the h2 tags
+    const h2Elements = faqs.querySelectorAll("#faqs h2");
     
-    var faqs = $("faqs");
-    var h2Elements = faqs.getElementsByTagName("h2");
-    
-      
-    for (var i = 0; i < h2Elements.length; i++ ) {
-    	h2Elements[i].onclick = toggle;
+    // attach event handler for each h2 tag	    
+    for (let h2Element of h2Elements) {
+        h2Element.addEventListener("click", toggle);
     }
-    
+    // set focus on first h2 tag's <a> tag
     h2Elements[0].firstChild.focus();       
-};
+});
